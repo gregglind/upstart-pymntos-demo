@@ -1,0 +1,93 @@
+# running a controlled service with upstart...
+
+so daemons.  Not these demons, or these, but these.
+
+back in the olden days, we used init.d
+
+now we can use *upstart*
+
+# http://docs.python.org/library/wsgiref.html#module-wsgiref.simple_server
+# wsgi demo
+
+
+so here is the code... a http web service that gives amanzing animal facts,
+    some of which are true
+
+(you know about tmux right?)
+
+
+pre run
+auto start.
+kill it and respawn
+
+'start/stop'
+
+singleton
+
+
+man 5 init
+
+
+includes pre-stop,pre-start, chroot, chown
+
+
+'''
+from wsgiref.simple_server import make_server, demo_app
+
+httpd = make_server('', 8000, demo_app)
+print "Serving HTTP on port 8000..."
+
+# Respond to requests until process is killed
+httpd.serve_forever()
+
+# Alternative: serve one request, then exit
+httpd.handle_request()
+'''
+
+$ curl 'localhost:8000'
+
+
+sys
+import time
+import urllib2
+
+while True:
+    try:
+        print urllib2.urlopen('http://localhost:8000',timeout=.5).read().split('\n')[0]
+        sys.stdout.flush()
+    except urllib2.URLError, exc:
+        print exc
+    
+    time.sleep(.5)
+
+
+
+The difference between serivces and daemons is complicated
+
+(text:  I don't really understand daemons or services)
+(text:  hopefully, I won't need to.)
+
+
+man 5 init
+
+
+# seems like you need to actually copy
+sudo cp ~/gits/upstart_demo/upstart_demo_server.conf .
+sudo tail -F /tmp/upstart.log
+
+
+gregg@li119-89:/etc/init$ sudo /sbin/start upstart_demo_server
+upstart_demo_server start/running, process 3109
+
+
+http://greeennotebook.com/2010/06/run-your-program-as-a-service-with-upstart-in-ubuntu/
+
+1)  get ubuntu in virtualbox
+
+http://www.ubuntu.com/download/server/download
+
+
+
+
+
+
